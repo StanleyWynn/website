@@ -1,0 +1,620 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陳冠宇 (Alex Chen) • Personal Student Profile Card</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Space Grotesk', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            ink: '#111827',
+            canvas: '#fbf8f2',
+            pastelYellow: '#fef08a',
+            pastelMint: '#bbf7d0',
+            pastelSky: '#bae6fd',
+            pastelLavender: '#e9d5ff',
+            pastelCoral: '#fecdd3',
+          },
+          boxShadow: {
+            'brutal-sm': '2px 2px 0px var(--brutal-shadow, #111827)',
+            'brutal': '4px 4px 0px var(--brutal-shadow, #111827)',
+            'brutal-lg': '6px 6px 0px var(--brutal-shadow, #111827)',
+            'brutal-xl': '8px 8px 0px var(--brutal-shadow, #111827)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --brutal-stroke: #111827;
+      --brutal-shadow: #111827;
+      --bg-body: #fbf8f2;
+      --dot-color: #111827;
+    }
+    html.dark {
+      --brutal-stroke: #f3f4f6;
+      --brutal-shadow: #f3f4f6;
+      --bg-body: #0d0e15;
+      --dot-color: #374151;
+    }
+    body {
+      background-color: var(--bg-body);
+      background-image: radial-gradient(var(--dot-color) 0.75px, transparent 0.75px);
+      background-size: 20px 20px;
+      transition: background-color 0.2s ease;
+    }
+    .brutal-border {
+      border: 2.5px solid var(--brutal-stroke);
+      transition: border-color 0.2s ease;
+    }
+    .brutal-btn {
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--brutal-shadow);
+    }
+    .brutal-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--brutal-shadow);
+    }
+    .shadow-brutal-sm {
+      box-shadow: 2px 2px 0px var(--brutal-shadow);
+    }
+    .shadow-brutal {
+      box-shadow: 4px 4px 0px var(--brutal-shadow);
+    }
+    .shadow-brutal-lg {
+      box-shadow: 6px 6px 0px var(--brutal-shadow);
+    }
+    .shadow-brutal-xl {
+      box-shadow: 8px 8px 0px var(--brutal-shadow);
+    }
+    .copy-notification {
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-ink dark:text-neutral-100 flex flex-col items-center justify-center p-4 sm:p-6 md:p-10 antialiased selection:bg-pastelYellow selection:text-ink">
+
+  <!-- Floating Top Control Bar (Language & Dark Mode Toggles) -->
+  <div class="fixed top-4 right-4 sm:top-6 sm:right-6 z-40 flex items-center gap-2 sm:gap-2.5">
+    <!-- Language Toggle Button -->
+    <button id="langToggleBtn" onclick="toggleLanguage()" type="button" aria-label="Toggle language" class="brutal-border bg-white dark:bg-[#1f2232] text-ink dark:text-neutral-100 px-3 py-1.5 rounded-xl shadow-brutal-sm brutal-btn flex items-center gap-1.5 font-display font-bold text-xs cursor-pointer select-none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 flex-shrink-0"><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+      <span class="tracking-tight flex items-center gap-1">
+        <span id="langLabelZh" class="font-extrabold text-ink dark:text-pastelYellow underline decoration-2 underline-offset-2">中</span>
+        <span class="text-neutral-400 dark:text-neutral-500">/</span>
+        <span id="langLabelEn" class="text-neutral-400 dark:text-neutral-500 font-semibold">EN</span>
+      </span>
+    </button>
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="themeToggleBtn" onclick="toggleDarkMode()" type="button" aria-label="Toggle dark mode" class="brutal-border bg-white dark:bg-[#1f2232] text-ink dark:text-neutral-100 px-3 py-1.5 rounded-xl shadow-brutal-sm brutal-btn flex items-center gap-1.5 font-display font-bold text-xs cursor-pointer select-none" title="Toggle dark mode">
+      <!-- Sun icon (shown in dark mode) -->
+      <svg id="themeIconSun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-pastelYellow hidden"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+      <!-- Moon icon (shown in light mode) -->
+      <svg id="themeIconMoon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+      <span id="themeBtnText" class="hidden sm:inline">Dark</span>
+    </button>
+  </div>
+
+  <!-- Floating Toast Notification for Email Copy & CV Download -->
+  <div id="copyToast" class="fixed bottom-6 right-6 z-50 pointer-events-none opacity-0 translate-y-[8px] transition-all duration-300">
+    <div class="bg-pastelMint text-ink brutal-border px-4 py-2.5 rounded-xl shadow-brutal flex items-center gap-2 font-display font-bold text-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" aria-hidden="true" class="lucide lucide-check-circle-2 w-4 h-4 text-emerald-800"><circle cx="12" cy="12" r="10"></circle><path d="m16 9-5.5 5.5L8 12"></path></svg>
+      <span id="toastMessageText">Email copied to clipboard!</span>
+    </div>
+  </div>
+
+  <!-- Main Card Outer Container -->
+  <main class="w-full max-w-4xl bg-white dark:bg-[#141622] brutal-border rounded-3xl shadow-brutal-xl overflow-hidden relative transition-colors duration-200">
+    
+    <!-- Top Decorative Brutalist Color Ribbon -->
+    <div class="h-3 w-full bg-gradient-to-r from-pastelYellow via-pastelMint to-pastelSky border-b-[2.5px] border-ink dark:border-neutral-100 flex">
+      <div class="flex-1 border-r-[2.5px] border-ink dark:border-neutral-100 bg-pastelYellow"></div>
+      <div class="flex-1 border-r-[2.5px] border-ink dark:border-neutral-100 bg-pastelMint"></div>
+      <div class="flex-1 border-r-[2.5px] border-ink dark:border-neutral-100 bg-pastelSky"></div>
+      <div class="flex-1 bg-pastelCoral"></div>
+    </div>
+
+    <!-- Main Content Area: 2-Column Desktop Grid -->
+    <div class="p-6 sm:p-8 md:p-10">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-10 items-start">
+        
+        <!-- LEFT COLUMN (Avatar, Status, Location, Contact) -->
+        <div class="md:col-span-5 flex flex-col items-center sm:items-stretch gap-5">
+          
+          <!-- Avatar Frame with Hard Offset Shadow -->
+          <div class="relative group self-center w-full max-w-[280px]">
+            <!-- Decorative Backing Offset Block -->
+            <div class="absolute inset-0 bg-pastelYellow brutal-border rounded-2xl transform translate-x-2.5 translate-y-2.5 group-hover:translate-x-3.5 group-hover:translate-y-3.5 transition-transform duration-200"></div>
+            <!-- Primary Image Frame -->
+            <div class="relative bg-white dark:bg-neutral-800 brutal-border rounded-2xl overflow-hidden aspect-square shadow-brutal">
+              <img src="./avatar.jpg" alt="陳冠宇 (Alex Chen) portrait" class="w-full h-full object-cover object-center">
+              <!-- Subtle badge on avatar -->
+              <span class="absolute bottom-2.5 right-2.5 bg-white dark:bg-[#141622] dark:text-neutral-100 brutal-border px-2 py-0.5 rounded-md text-[11px] font-display font-bold tracking-wider uppercase shadow-brutal-sm">
+                NSYSU '26
+              </span>
+            </div>
+          </div>
+
+          <!-- Status Pill -->
+          <div class="bg-pastelMint brutal-border px-3.5 py-2 rounded-full shadow-brutal-sm flex items-center justify-center gap-2 self-stretch text-center text-ink">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
+            </span>
+            <span id="statusPillText" class="text-xs sm:text-[13px] font-bold tracking-tight font-sans">
+              積極尋求學生專案與交流合作
+            </span>
+          </div>
+
+          <!-- Location & Interactive Email Section -->
+          <div class="flex flex-col gap-2.5 self-stretch">
+            <!-- Location Badge -->
+            <div class="bg-neutral-50 dark:bg-neutral-800/80 brutal-border px-3.5 py-2 rounded-xl flex items-center gap-2 shadow-brutal-sm text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="map-pin" aria-hidden="true" class="lucide lucide-map-pin w-4 h-4 text-ink dark:text-neutral-200 flex-shrink-0"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span id="locationText" class="font-bold text-xs sm:text-sm text-neutral-800 dark:text-neutral-200">台灣 高雄</span>
+              <span class="ml-auto text-[11px] text-neutral-500 dark:text-neutral-400 font-mono font-medium">GMT+8</span>
+            </div>
+
+            <!-- Clickable Email Pill with Copy Action -->
+            <div class="flex items-center gap-1.5 w-full">
+              <!-- Direct Mailto Link -->
+              <a href="mailto:alex.chen@student.tw" class="flex-1 brutal-border bg-pastelSky/40 dark:bg-pastelSky/30 hover:bg-pastelSky px-3.5 py-2 rounded-xl font-mono text-xs font-bold text-ink dark:text-neutral-100 shadow-brutal-sm brutal-btn flex items-center justify-between group truncate" title="Click to send email">
+                <span class="flex items-center gap-2 truncate">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" aria-hidden="true" class="lucide lucide-mail w-3.5 h-3.5 flex-shrink-0 group-hover:scale-110 transition-transform"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+                  <span class="truncate">alex.chen@student.tw</span>
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="external-link" aria-hidden="true" class="lucide lucide-external-link w-3 h-3 opacity-60 ml-1 flex-shrink-0"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+              </a>
+
+              <!-- Copy Button -->
+              <button id="copyEmailBtn" onclick="copyEmail()" type="button" aria-label="Copy email address" class="brutal-border bg-white dark:bg-neutral-800 hover:bg-pastelYellow dark:hover:bg-pastelYellow dark:hover:text-ink p-2 rounded-xl shadow-brutal-sm brutal-btn flex-shrink-0 text-ink dark:text-neutral-200 cursor-pointer" title="Copy email to clipboard">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="copy" aria-hidden="true" class="lucide lucide-copy w-4 h-4" id="copyIcon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Static Download CV / Portfolio Action Button -->
+          <a href="#download-cv" onclick="triggerDownload(event)" class="brutal-border bg-pastelYellow hover:bg-amber-300 px-4 py-3 rounded-xl font-display font-bold text-sm text-ink shadow-brutal brutal-btn flex items-center justify-center gap-2.5 text-center mt-1 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="file-down" aria-hidden="true" class="lucide lucide-file-down w-4 h-4 stroke-[2.5]"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
+            <span id="downloadBtnText">下載履歷 / 作品集</span>
+            <span class="text-[10px] bg-ink text-white px-1.5 py-0.5 rounded font-mono">PDF</span>
+          </a>
+
+        </div>
+
+        <!-- RIGHT COLUMN (Header, Bio, Motto Callout, Tags, Social Grid) -->
+        <div class="md:col-span-7 flex flex-col gap-5">
+          
+          <!-- Name & Major Tagline Header -->
+          <div class="border-b-[2.5px] border-neutral-200 dark:border-neutral-700 pb-4">
+            <div class="flex items-center justify-between gap-3 flex-wrap mb-1">
+              <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-ink dark:text-neutral-50 tracking-tight flex items-center gap-2 flex-wrap">
+                <span id="nameZh">陳冠宇</span>
+                <span id="nameEn" class="text-xl sm:text-2xl text-neutral-600 dark:text-neutral-300 font-semibold font-sans">Alex Chen</span>
+                <span id="roleBadgeText" class="text-sm font-sans font-bold bg-pastelCoral text-ink brutal-border px-2.5 py-0.5 rounded-full shadow-brutal-sm align-middle">
+                  學生
+                </span>
+              </h1>
+              <span id="cardIdText" class="font-mono text-xs text-neutral-500 dark:text-neutral-400 font-semibold bg-neutral-100 dark:bg-neutral-800 brutal-border px-2 py-0.5 rounded-md">
+                Card ID #2026-AC
+              </span>
+            </div>
+            <p class="font-display font-bold text-sm sm:text-base text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5 flex-wrap">
+              <span class="inline-block w-2.5 h-2.5 bg-pastelYellow brutal-border rounded-full"></span>
+              <span id="institutionText">國立中山大學 • 跨領域探索者</span>
+            </p>
+          </div>
+
+          <!-- 2-Sentence Bio -->
+          <p id="bioText" class="text-sm sm:text-[15px] leading-relaxed text-neutral-700 dark:text-neutral-300 font-medium">
+            熱衷於連結科技、以人為本的敘事與跨領域校園專案。持續探索如何運用數據化思維與創意策略，將學生發起的專案轉化為具實質影響力的社群價值。
+          </p>
+
+          <!-- Pale Callout Box (Personal Motto & Campus Involvement) -->
+          <div class="bg-pastelYellow/35 dark:bg-pastelYellow/15 brutal-border p-3.5 sm:p-4 rounded-2xl shadow-brutal-sm flex items-start gap-3 relative overflow-hidden">
+            <div class="bg-pastelYellow brutal-border p-2 rounded-xl text-ink shadow-brutal-sm flex-shrink-0 mt-0.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" aria-hidden="true" class="lucide lucide-sparkles w-4 h-4"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></circle><circle cx="4" cy="20" r="2"></circle></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-1">
+                <span id="calloutTitleText" class="text-xs font-display font-bold tracking-wider uppercase text-neutral-900 dark:text-neutral-200">
+                  校園座右銘與組織經歷
+                </span>
+                <span id="calloutStatusText" class="text-[11px] font-mono font-bold text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-800 brutal-border px-1.5 py-0.2 rounded">
+                  活躍中
+                </span>
+              </div>
+              <p id="calloutQuoteText" class="text-xs sm:text-sm font-semibold text-neutral-800 dark:text-neutral-100 leading-snug">
+                "在不同領域間保持永不熄滅的好奇心。"
+              </p>
+              <p id="calloutSubText" class="text-xs text-neutral-600 dark:text-neutral-400 mt-1 font-medium">
+                中山科技與設計論壇 總召 • 學生自治會幹部
+              </p>
+            </div>
+          </div>
+
+          <!-- Generic Topic & Skill Tags Row -->
+          <div>
+            <div id="tagsTitleText" class="text-[11px] font-display font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-2 flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="tag" aria-hidden="true" class="lucide lucide-tag w-3 h-3"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+              <span>核心領域與技能標籤</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span id="tag-0" class="brutal-border bg-pastelMint/70 hover:bg-pastelMint px-3 py-1 rounded-full text-xs font-bold text-ink shadow-brutal-sm brutal-btn cursor-default">
+                #活動策劃
+              </span>
+              <span id="tag-1" class="brutal-border bg-pastelSky/70 hover:bg-pastelSky px-3 py-1 rounded-full text-xs font-bold text-ink shadow-brutal-sm brutal-btn cursor-default">
+                #公開演說
+              </span>
+              <span id="tag-2" class="brutal-border bg-pastelYellow/90 hover:bg-pastelYellow px-3 py-1 rounded-full text-xs font-bold text-ink shadow-brutal-sm brutal-btn cursor-default">
+                #攝影紀實
+              </span>
+              <span id="tag-3" class="brutal-border bg-pastelLavender/70 hover:bg-pastelLavender px-3 py-1 rounded-full text-xs font-bold text-ink shadow-brutal-sm brutal-btn cursor-default">
+                #數據思維
+              </span>
+              <span id="tag-4" class="brutal-border bg-pastelCoral/70 hover:bg-pastelCoral px-3 py-1 rounded-full text-xs font-bold text-ink shadow-brutal-sm brutal-btn cursor-default">
+                #內容創作
+              </span>
+            </div>
+          </div>
+
+          <!-- Grid of Generic Social Links -->
+          <div>
+            <div id="socialTitleText" class="text-[11px] font-display font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-2 flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="share-2" aria-hidden="true" class="lucide lucide-share-2 w-3 h-3"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>
+              <span>社群與作品連結</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              
+              <!-- Instagram -->
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="brutal-border bg-white dark:bg-neutral-800 hover:bg-pastelCoral/40 p-2.5 rounded-xl shadow-brutal-sm brutal-btn flex flex-col items-center justify-center gap-1 text-center group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ink dark:text-neutral-100 group-hover:scale-110 transition-transform">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                </svg>
+                <span class="text-xs font-display font-bold text-ink dark:text-neutral-100">Instagram</span>
+                <span id="socialSub-0" class="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">@alex.chen</span>
+              </a>
+
+              <!-- LinkedIn -->
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="brutal-border bg-white dark:bg-neutral-800 hover:bg-pastelSky/40 p-2.5 rounded-xl shadow-brutal-sm brutal-btn flex flex-col items-center justify-center gap-1 text-center group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ink dark:text-neutral-100 group-hover:scale-110 transition-transform">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect width="4" height="12" x="2" y="9"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+                <span class="text-xs font-display font-bold text-ink dark:text-neutral-100">LinkedIn</span>
+                <span id="socialSub-1" class="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">/in/alexchen</span>
+              </a>
+
+              <!-- Medium / Blog -->
+              <a href="https://medium.com" target="_blank" rel="noopener noreferrer" class="brutal-border bg-white dark:bg-neutral-800 hover:bg-pastelMint/40 p-2.5 rounded-xl shadow-brutal-sm brutal-btn flex flex-col items-center justify-center gap-1 text-center group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-ink dark:text-neutral-100 group-hover:scale-110 transition-transform">
+                  <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"></path>
+                </svg>
+                <span class="text-xs font-display font-bold text-ink dark:text-neutral-100">Medium</span>
+                <span id="socialSub-2" class="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">專欄文章</span>
+              </a>
+
+              <!-- Spotify -->
+              <a href="https://spotify.com" target="_blank" rel="noopener noreferrer" class="brutal-border bg-white dark:bg-neutral-800 hover:bg-pastelYellow p-2.5 rounded-xl shadow-brutal-sm brutal-btn flex flex-col items-center justify-center gap-1 text-center group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-ink dark:text-neutral-100 group-hover:scale-110 transition-transform">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.485 17.31a.754.754 0 0 1-1.036.25c-2.836-1.733-6.406-2.126-10.61-1.164a.753.753 0 1 1-.336-1.468c4.604-1.052 8.563-.61 11.732 1.346a.754.754 0 0 1 .25 1.036zm1.465-3.26a.945.945 0 0 1-1.298.312c-3.245-1.994-8.193-2.57-12.032-1.405a.945.945 0 0 1-.555-1.806c4.387-1.33 9.84-.693 13.573 1.601a.945.945 0 0 1 .312 1.298zm.126-3.41c-3.89-2.31-10.31-2.523-14.032-1.393a1.134 1.134 0 1 1-.659-2.171c4.275-1.298 11.36-1.047 15.843 1.615a1.134 1.134 0 0 1-1.152 1.949z"></path>
+                </svg>
+                <span class="text-xs font-display font-bold text-ink dark:text-neutral-100">Spotify</span>
+                <span id="socialSub-3" class="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">精選歌單</span>
+              </a>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashed Line Divider for Bottom Section -->
+    <div class="w-full border-t-[2.5px] border-dashed border-ink dark:border-neutral-100 my-0"></div>
+
+    <!-- BOTTOM SECTION: 4 Metric Boxes with Bold Numbers -->
+    <div class="bg-neutral-50/80 dark:bg-[#0f1019] p-6 sm:p-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
+        
+        <!-- Metric 1 -->
+        <div class="bg-white dark:bg-[#181a28] brutal-border p-4 rounded-2xl shadow-brutal-sm brutal-btn flex flex-col items-center text-center justify-center group hover:bg-pastelYellow/30">
+          <span id="metricVal-0" class="font-display font-extrabold text-2xl sm:text-3xl text-ink dark:text-neutral-50 tracking-tight group-hover:scale-105 transition-transform">
+            3+
+          </span>
+          <span id="metricLabel-0" class="text-xs sm:text-[13px] font-bold text-neutral-700 dark:text-neutral-200 mt-1 uppercase font-display tracking-wide">
+            團隊專案
+          </span>
+          <span id="metricSub-0" class="text-[10px] text-neutral-400 dark:text-neutral-400 font-mono mt-0.5">跨領域協作</span>
+        </div>
+
+        <!-- Metric 2 -->
+        <div class="bg-white dark:bg-[#181a28] brutal-border p-4 rounded-2xl shadow-brutal-sm brutal-btn flex flex-col items-center text-center justify-center group hover:bg-pastelMint/30">
+          <span id="metricVal-1" class="font-display font-extrabold text-2xl sm:text-3xl text-ink dark:text-neutral-50 tracking-tight group-hover:scale-105 transition-transform">
+            2 年
+          </span>
+          <span id="metricLabel-1" class="text-xs sm:text-[13px] font-bold text-neutral-700 dark:text-neutral-200 mt-1 uppercase font-display tracking-wide">
+            社團經歷
+          </span>
+          <span id="metricSub-1" class="text-[10px] text-neutral-400 dark:text-neutral-400 font-mono mt-0.5">領導與營運</span>
+        </div>
+
+        <!-- Metric 3 -->
+        <div class="bg-white dark:bg-[#181a28] brutal-border p-4 rounded-2xl shadow-brutal-sm brutal-btn flex flex-col items-center text-center justify-center group hover:bg-pastelSky/30">
+          <span id="metricVal-2" class="font-display font-extrabold text-2xl sm:text-3xl text-ink dark:text-neutral-50 tracking-tight group-hover:scale-105 transition-transform">
+            10+
+          </span>
+          <span id="metricLabel-2" class="text-xs sm:text-[13px] font-bold text-neutral-700 dark:text-neutral-200 mt-1 uppercase font-display tracking-wide">
+            校園活動
+          </span>
+          <span id="metricSub-2" class="text-[10px] text-neutral-400 dark:text-neutral-400 font-mono mt-0.5">工作坊與講座</span>
+        </div>
+
+        <!-- Metric 4 -->
+        <div class="bg-white dark:bg-[#181a28] brutal-border p-4 rounded-2xl shadow-brutal-sm brutal-btn flex flex-col items-center text-center justify-center group hover:bg-pastelCoral/30">
+          <span id="metricVal-3" class="font-display font-extrabold text-2xl sm:text-3xl text-ink dark:text-neutral-50 tracking-tight group-hover:scale-105 transition-transform">
+            100%
+          </span>
+          <span id="metricLabel-3" class="text-xs sm:text-[13px] font-bold text-neutral-700 dark:text-neutral-200 mt-1 uppercase font-display tracking-wide">
+            好奇心
+          </span>
+          <span id="metricSub-3" class="text-[10px] text-neutral-400 dark:text-neutral-400 font-mono mt-0.5">持續探索</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Footer Strip with GitHub Pages Badge -->
+    <div class="px-6 py-2.5 bg-white dark:bg-[#141622] border-t-[2.5px] border-ink dark:border-neutral-100 flex items-center justify-between text-[11px] font-mono text-neutral-600 dark:text-neutral-400 flex-wrap gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span id="footerBuiltText">為 GitHub Pages 打造 (純前端靜態頁面)</span>
+      </div>
+      <div class="flex items-center gap-3"><span id="footerVersionText" class="font-bold">v1.2 新粗獷主義</span></div>
+    </div>
+
+  </main>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Multilingual Dictionary
+    const i18n = {
+      zh: {
+        pageTitle: "陳冠宇 (Alex Chen) • 個人學生數位名片",
+        nameZh: "陳冠宇",
+        nameEn: "Alex Chen",
+        roleBadge: "學生",
+        cardId: "Card ID #2026-AC",
+        statusPill: "積極尋求學生專案與交流合作",
+        location: "台灣 高雄",
+        downloadBtn: "下載履歷 / 作品集",
+        cvToast: "已成功下載 Alex_Chen_CV_Portfolio.pdf！",
+        emailToast: "信箱已複製到剪貼簿！",
+        institution: "國立中山大學 • 跨領域探索者",
+        bio: "熱衷於連結科技、以人為本的敘事與跨領域校園專案。持續探索如何運用數據化思維與創意策略，將學生發起的專案轉化為具實質影響力的社群價值。",
+        calloutTitle: "校園座右銘與組織經歷",
+        calloutStatus: "活躍中",
+        calloutQuote: "\"在不同領域間保持永不熄滅的好奇心。\"",
+        calloutSub: "中山科技與設計論壇 總召 • 學生自治會幹部",
+        tagsTitle: "核心領域與技能標籤",
+        tags: ["#活動策劃", "#公開演說", "#攝影紀實", "#數據思維", "#內容創作"],
+        socialTitle: "社群與作品連結",
+        socialSubs: ["@alex.chen", "/in/alexchen", "專欄文章", "精選歌單"],
+        metrics: [
+          { val: "3+", label: "團隊專案", sub: "跨領域協作" },
+          { val: "2 年", label: "社團經歷", sub: "領導與營運" },
+          { val: "10+", label: "校園活動", sub: "工作坊與講座" },
+          { val: "100%", label: "好奇心", sub: "持續探索" }
+        ],
+        footerBuilt: "為 GitHub Pages 打造 (純前端靜態頁面)",
+        footerVersion: "v1.2 新粗獷主義"
+      },
+      en: {
+        pageTitle: "Alex Chen • Personal Student Profile Card",
+        nameZh: "Alex Chen",
+        nameEn: "(陳冠宇)",
+        roleBadge: "Student",
+        cardId: "Card ID #2026-AC",
+        statusPill: "Open to Student Projects & Networking",
+        location: "Kaohsiung, Taiwan",
+        downloadBtn: "Download CV / Portfolio",
+        cvToast: "Alex_Chen_CV_Portfolio.pdf downloaded!",
+        emailToast: "Email copied to clipboard!",
+        institution: "National Sun Yat-sen University • Multidisciplinary Explorer",
+        bio: "Passionate about bridging technology, human-centered storytelling, and collaborative campus initiatives. Constantly exploring how data-driven thinking and creative strategy can transform student-led solutions into real community impact.",
+        calloutTitle: "Campus Motto & Community",
+        calloutStatus: "Active",
+        calloutQuote: "\"Stay relentlessly curious across every discipline.\"",
+        calloutSub: "Lead Organizer at NSYSU Tech & Design Forum • Student Leadership Council",
+        tagsTitle: "Interest Areas & Capabilities",
+        tags: ["#EventPlanning", "#PublicSpeaking", "#Photography", "#DataThinking", "#ContentWriting"],
+        socialTitle: "Social Channels",
+        socialSubs: ["@alex.chen", "/in/alexchen", "Stories", "Playlists"],
+        metrics: [
+          { val: "3+", label: "Team Projects", sub: "Cross-Functional" },
+          { val: "2 Yrs", label: "Club Exp.", sub: "Leadership & Ops" },
+          { val: "10+", label: "Campus Events", sub: "Workshops & Talks" },
+          { val: "100%", label: "Curiosity", sub: "Never Stops" }
+        ],
+        footerBuilt: "Built for GitHub Pages (Client-Side Static)",
+        footerVersion: "v1.2 Neo-Brutalist"
+      }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'zh';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const data = i18n[lang];
+
+      document.title = data.pageTitle;
+      document.getElementById('nameZh').textContent = data.nameZh;
+      document.getElementById('nameEn').textContent = data.nameEn;
+      document.getElementById('roleBadgeText').textContent = data.roleBadge;
+      document.getElementById('cardIdText').textContent = data.cardId;
+      document.getElementById('statusPillText').textContent = data.statusPill;
+      document.getElementById('locationText').textContent = data.location;
+      document.getElementById('downloadBtnText').textContent = data.downloadBtn;
+      document.getElementById('institutionText').textContent = data.institution;
+      document.getElementById('bioText').textContent = data.bio;
+      document.getElementById('calloutTitleText').textContent = data.calloutTitle;
+      document.getElementById('calloutStatusText').textContent = data.calloutStatus;
+      document.getElementById('calloutQuoteText').textContent = data.calloutQuote;
+      document.getElementById('calloutSubText').textContent = data.calloutSub;
+      
+      const tagsTitleSpan = document.getElementById('tagsTitleText').querySelector('span');
+      if (tagsTitleSpan) tagsTitleSpan.textContent = data.tagsTitle;
+      
+      data.tags.forEach((tag, idx) => {
+        const el = document.getElementById(`tag-${idx}`);
+        if (el) el.textContent = tag;
+      });
+
+      const socialTitleSpan = document.getElementById('socialTitleText').querySelector('span');
+      if (socialTitleSpan) socialTitleSpan.textContent = data.socialTitle;
+
+      const subMedium = document.getElementById('socialSub-2');
+      if (subMedium) subMedium.textContent = data.socialSubs[2];
+      const subSpotify = document.getElementById('socialSub-3');
+      if (subSpotify) subSpotify.textContent = data.socialSubs[3];
+
+      data.metrics.forEach((m, idx) => {
+        const valEl = document.getElementById(`metricVal-${idx}`);
+        const labelEl = document.getElementById(`metricLabel-${idx}`);
+        const subEl = document.getElementById(`metricSub-${idx}`);
+        if (valEl) valEl.textContent = m.val;
+        if (labelEl) labelEl.textContent = m.label;
+        if (subEl) subEl.textContent = m.sub;
+      });
+
+      document.getElementById('footerBuiltText').textContent = data.footerBuilt;
+      document.getElementById('footerVersionText').textContent = data.footerVersion;
+
+      // Update toggle indicator
+      const zhLabel = document.getElementById('langLabelZh');
+      const enLabel = document.getElementById('langLabelEn');
+      if (lang === 'zh') {
+        zhLabel.className = "font-extrabold text-ink dark:text-pastelYellow underline decoration-2 underline-offset-2";
+        enLabel.className = "text-neutral-400 dark:text-neutral-500 font-semibold";
+      } else {
+        zhLabel.className = "text-neutral-400 dark:text-neutral-500 font-semibold";
+        enLabel.className = "font-extrabold text-ink dark:text-pastelYellow underline decoration-2 underline-offset-2";
+      }
+    }
+
+    function toggleLanguage() {
+      setLanguage(currentLang === 'zh' ? 'en' : 'zh');
+    }
+
+    // Theme Management
+    function initTheme() {
+      const storedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = storedTheme === 'dark' || (!storedTheme && prefersDark);
+      applyTheme(isDark);
+    }
+
+    function applyTheme(isDark) {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('themeIconSun').classList.remove('hidden');
+        document.getElementById('themeIconMoon').classList.add('hidden');
+        document.getElementById('themeBtnText').textContent = 'Light';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('themeIconSun').classList.add('hidden');
+        document.getElementById('themeIconMoon').classList.remove('hidden');
+        document.getElementById('themeBtnText').textContent = 'Dark';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDark = !document.documentElement.classList.contains('dark');
+      applyTheme(isDark);
+    }
+
+    // Toast Functionality
+    function showToast(message) {
+      const toast = document.getElementById('copyToast');
+      const toastText = document.getElementById('toastMessageText');
+      toastText.textContent = message;
+      
+      toast.classList.remove('opacity-0', 'translate-y-[8px]');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-[8px]');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2300);
+    }
+
+    // Client-side static email copy function
+    function copyEmail() {
+      const email = 'alex.chen@student.tw';
+      navigator.clipboard.writeText(email).then(() => {
+        showToast(i18n[currentLang].emailToast);
+        
+        const copyIcon = document.getElementById('copyIcon');
+        copyIcon.setAttribute('data-lucide', 'check');
+        lucide.createIcons();
+
+        setTimeout(() => {
+          copyIcon.setAttribute('data-lucide', 'copy');
+          lucide.createIcons();
+        }, 2200);
+      }).catch(err => {
+        alert('Email: alex.chen@student.tw');
+      });
+    }
+
+    // Keyboard shortcut (C) to copy email, (D) for dark mode, (L) for language
+    document.addEventListener('keydown', (e) => {
+      if (!e.target.matches('input, textarea')) {
+        if (e.key === 'c' || e.key === 'C') {
+          copyEmail();
+        } else if (e.key === 'd' || e.key === 'D') {
+          toggleDarkMode();
+        } else if (e.key === 'l' || e.key === 'L') {
+          toggleLanguage();
+        }
+      }
+    });
+
+    // Static Download trigger demonstration
+    function triggerDownload(e) {
+      e.preventDefault();
+      showToast(i18n[currentLang].cvToast);
+    }
+
+    // Initialize on load
+    initTheme();
+    setLanguage(currentLang);
+  </script>
+
+</body></html>
